@@ -1,0 +1,28 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "teams-lite",
+  "description": "A thin Microsoft Teams chat canvas for GitHub Copilot: unread inbox, conversations, and replies through the WorkIQ connector.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Dhruv Chand",
+    "url": "https://github.com/dhruvchand"
+  },
+  "repository": "https://github.com/dhruvchand/copilot-plugins",
+  "license": "MIT",
+  "keywords": [
+    "canvas",
+    "copilot-canvas",
+    "copilot-extension",
+    "microsoft-teams",
+    "teams",
+    "chat",
+    "messaging",
+    "workiq",
+    "microsoft-365"
+  ],
+  "extensions": {
+    "com.github.copilot": {
+      "logo": "assets/preview.png"
+    }
+  }
+}

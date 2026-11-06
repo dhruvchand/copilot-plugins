@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teams</title>
+<style>__STYLES__</style>
+</head>
+<body>
+<div id="app" class="app">
+  <aside class="sidebar" aria-label="Chats">
+    <header class="sidebar-header">
+      <h1>Chat</h1>
+      <button id="refresh" class="icon-btn" type="button" title="Refresh chats" aria-label="Refresh chats">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M17.65 6.35A7.96 7.96 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+      </button>
+    </header>
+    <div class="tabs" role="tablist" aria-label="Filter chats">
+      <button type="button" role="tab" data-filter="unread" aria-selected="true">Unread<span id="count-unread" class="count" hidden></span></button>
+      <button type="button" role="tab" data-filter="all" aria-selected="false">All</button>
+    </div>
+    <div class="search">
+      <input id="search" type="search" placeholder="Search chats" autocomplete="off" spellcheck="false" aria-label="Search chats">
+    </div>
+    <div id="banner" class="banner" role="status" hidden></div>
+    <ul id="chat-list" class="chat-list"></ul>
+  </aside>
+  <main class="conversation" aria-label="Conversation">
+    <div id="empty-pane" class="empty-pane">
+      <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path fill="currentColor" d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
+      <p>Pick a chat to read and reply.</p>
+    </div>
+    <section id="chat-pane" class="chat-pane" hidden>
+      <header class="chat-header">
+        <button id="back" class="icon-btn back" type="button" title="Back to chats" aria-label="Back to chats">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </button>
+        <div id="chat-avatar" class="chat-avatar"></div>
+        <div class="chat-heading">
+          <h2 id="chat-title"></h2>
+          <div id="chat-subtitle" class="muted"></div>
+        </div>
+        <div class="header-actions">
+          <button id="toggle-read" class="icon-btn" type="button" title="Mark as unread" aria-label="Mark as unread">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </button>
+          <button id="open-teams" class="icon-btn" type="button" title="Open in Teams" aria-label="Open in Teams">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          </button>
+          <button id="reload-chat" class="icon-btn" type="button" title="Reload messages" aria-label="Reload messages">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M17.65 6.35A7.96 7.96 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+          </button>
+        </div>
+      </header>
+      <div id="history-banner" class="banner" role="status" hidden></div>
+      <div id="messages" class="messages" role="log" aria-live="polite" aria-label="Messages" tabindex="0"></div>
+      <form id="composer" class="composer" autocomplete="off">
+        <div id="draft-bar" class="draft-bar" role="status" hidden>
+          <div class="draft-bar-text"><strong id="draft-bar-label"></strong> <span id="draft-bar-text"></span></div>
+          <button id="draft-use" class="text-btn" type="button">Use it</button>
+          <button id="draft-dismiss" class="icon-btn sm" type="button" title="Dismiss" aria-label="Dismiss draft">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+        <div id="quote-bar" class="quote-bar" hidden>
+          <div class="quote-bar-text"><strong id="quote-name"></strong><span id="quote-text"></span></div>
+          <button id="quote-cancel" class="icon-btn sm" type="button" title="Cancel reply" aria-label="Cancel reply">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+        <div class="composer-row">
+          <textarea id="input" rows="1" placeholder="Type a message" aria-label="Message"></textarea>
+          <button id="send" class="send-btn" type="submit" title="Send (Enter)" aria-label="Send" disabled>
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
+        </div>
+        <div class="composer-foot">
+          <span id="send-error" class="send-error" role="alert" hidden></span>
+          <span class="hint">Enter to send · Shift+Enter for a new line</span>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+<script type="application/json" id="tl-config">__CONFIG__</script>
+<script nonce="__NONCE__">__SCRIPT__</script>
+</body>
+</html>
